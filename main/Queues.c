@@ -6,10 +6,12 @@ QueueHandle_t TempQueue;
 QueueHandle_t LightQueue;
 QueueHandle_t MoistureQueue;
 QueueHandle_t WaterQueue;
+QueueHandle_t GasQueue;
 
 void create_queues(void) {
     TempQueue = xQueueCreate(10, sizeof(float));
     LightQueue = xQueueCreate(10, sizeof(float));
     MoistureQueue = xQueueCreate(10, sizeof(float));
     WaterQueue = xQueueCreate(10, sizeof(float));
+    GasQueue = xQueueCreate(10, sizeof(uint16_t));
 }
