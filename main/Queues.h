@@ -8,6 +8,7 @@ extern QueueHandle_t TempQueue;
 extern QueueHandle_t LightQueue;
 extern QueueHandle_t MoistureQueue;
 extern QueueHandle_t WaterQueue;
+extern QueueHandle_t GasQueue;
 
 void create_queues(void);
 

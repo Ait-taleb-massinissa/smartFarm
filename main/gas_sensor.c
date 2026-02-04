@@ -1,6 +1,7 @@
 #include "gas_sensor.h"
 #include "esp_adc_cal.h"
 #include "esp_log.h"
+#include "Queues.h"
 
 static const char *TAG = "GAS_SENSOR";
 
@@ -33,6 +34,8 @@ static void gas_task(void *pvParameters)
             g_gas_alert = false;
             printf("✅ Air propre: %d ADC\n", g_gas_value);
         }
+
+        xQueueSend(GasQueue, &g_gas_value, portMAX_DELAY);
 
         vTaskDelay(pdMS_TO_TICKS(GAS_READ_INTERVAL_MS));
     }
