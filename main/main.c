@@ -39,5 +39,12 @@ void app_main(void)
     // start_webserver();
 
     // ESP_LOGI("MAIN", "Web server started");
-    xTaskCreate(&servo_task, "gas", 3072, NULL, 5, NULL);
+    relay_init();
+    gas_sensor_init();
+    gas_sensor_start();
+    servo_fenetre_init();
+    servo_fenetre_start();
+   
 }
+
+// xTaskCreate(&servo_fenetre_task, "servo_fenetre_task", 4096, NULL, 5, NULL);

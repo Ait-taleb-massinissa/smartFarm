@@ -12,8 +12,8 @@ bool g_gas_alert = false;
 static void gas_task(void *pvParameters)
 {
     // PRÉCHAUFFAGE: Les capteurs MQ ont besoin de 20-30 secondes
-    printf("⏳ Préchauffage capteur MQ (30s)...\n");
-    vTaskDelay(pdMS_TO_TICKS(30000)); // Attendre 30 secondes
+    // printf("⏳ Préchauffage capteur MQ (30s)...\n");
+    // vTaskDelay(pdMS_TO_TICKS(30000)); // Attendre 30 secondes
     printf("✅ Capteur MQ prêt!\n");
 
     while (1)
