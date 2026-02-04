@@ -56,3 +56,8 @@ void relay_task(void *pvParameters)
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
+
+void relay_start_task(gpio_num_t gpio_num)
+{
+    xTaskCreate(relay_task,"relay_task",2048,(void *)gpio_num,3,NULL);
+}
