@@ -11,5 +11,6 @@ extern QueueHandle_t WaterQueue;
 extern QueueHandle_t GasQueue;
 
 void create_queues(void);
+void start_queue_handlers(void);
 
 #endif
