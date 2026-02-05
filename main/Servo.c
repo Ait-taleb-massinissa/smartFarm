@@ -70,12 +70,12 @@ void servo_fenetre_task(void *pvParameters)
         if (g_gas_value > GAS_THRESHOLD_DANGER)
         {
             ouvrir_fenetre();
-            relay_on();
+            relay_on(GPIO_NUM_23);
         }
         else
         {
             fermer_fenetre();
-            relay_off();
+            relay_off(GPIO_NUM_23);
         }
 
         vTaskDelay(pdMS_TO_TICKS(500));

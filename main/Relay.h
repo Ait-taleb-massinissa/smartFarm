@@ -10,7 +10,9 @@ void relay_off();
 #define RELAY_H
 
 #include <stdint.h>
+#include "driver/gpio.h"
 
-void relay_task(void *pvParameters);
+void relay_on(gpio_num_t gpio_num);
+void relay_off(gpio_num_t gpio_num);
 
 #endif

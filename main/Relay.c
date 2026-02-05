@@ -31,12 +31,12 @@ void relay_off()
 #include "freertos/task.h"
 #include "esp_log.h"
 
-// Tâche de contrôle du relais
-void relay_task(void *pvParameters)
+
+void relay_on_task(void *pvParameters)
 {
     // Récupérer le numéro de pin depuis pvParameters
-    gpio_num_t relay_gpio = (gpio_num_t)(uintptr_t)pvParamete0rs;
-    
+    gpio_num_t relay_gpio = (gpio_num_t)(uintptr_t)pvParameters;
+
     ESP_LOGI("RELAY", "Tache relais demarree sur GPIO%d", relay_gpio);
     
     // Initialiser le GPIO
@@ -48,16 +48,34 @@ void relay_task(void *pvParameters)
         // Allumer le relais
         ESP_LOGI("RELAY", "Relais ON (GPIO%d)", relay_gpio);
         gpio_set_level(relay_gpio, 0);
-        vTaskDelay(pdMS_TO_TICKS(2000));
-        
-        // Éteindre le relais
-        ESP_LOGI("RELAY", "Relais OFF (GPIO%d)", relay_gpio);
-        gpio_set_level(relay_gpio, 1);
-        vTaskDelay(pdMS_TO_TICKS(2000));
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
 
-void relay_start_task(gpio_num_t gpio_num)
+void relay_off_task(void *pvParameters)
 {
-    xTaskCreate(relay_task,"relay_task",2048,(void *)gpio_num,3,NULL);
+    gpio_num_t relay_gpio = (gpio_num_t)(uintptr_t)pvParameters;
+
+    ESP_LOGI("RELAY", "Tache relais OFF demarree sur GPIO%d", relay_gpio);
+    
+    // Initialiser le GPIO
+    gpio_set_direction(relay_gpio, GPIO_MODE_OUTPUT);
+    gpio_set_level(relay_gpio, 1);  // OFF initial
+    
+    while (1)
+    {
+        // Eteindre le relais
+        ESP_LOGI("RELAY", "Relais OFF (GPIO%d)", relay_gpio);
+        gpio_set_level(relay_gpio, 1);
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
+
+void relay_on(gpio_num_t gpio_num)
+{
+    xTaskCreate(relay_on_task,"relay_task",2048,(void *)gpio_num,3,NULL);
+}
+void relay_off(gpio_num_t gpio_num)
+{
+    xTaskCreate(relay_off_task,"relay_off_task",2048,(void *)gpio_num,3,NULL);
 }

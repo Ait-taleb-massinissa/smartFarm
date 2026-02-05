@@ -15,6 +15,8 @@
 #include "Queues.h"
 #include "Servo.h"
 #include "gas_sensor.h"
+#include "EventGroup.h"
+#include "Lamp.h"
 void app_main(void)
 {
     // create_queues();
@@ -39,12 +41,19 @@ void app_main(void)
     // start_webserver();
 
     // ESP_LOGI("MAIN", "Web server started");
-    relay_init();
-    gas_sensor_init();
-    gas_sensor_start();
-    servo_fenetre_init();
-    servo_fenetre_start();
-   
+    // create_queues();
+    // relay_init();
+    // gas_sensor_init();
+    // gas_sensor_start();
+    // servo_fenetre_init();
+    // start_queue_handlers();
+    // start_event_group_handler();
+    lamp_init();
+    lamp_turn_on();
+    vTaskDelay(pdMS_TO_TICKS(3000));
+    lamp_turn_off();
+    vTaskDelay(pdMS_TO_TICKS(3000));
+    lamp_turn_on();
 }
 
 // xTaskCreate(&servo_fenetre_task, "servo_fenetre_task", 4096, NULL, 5, NULL);

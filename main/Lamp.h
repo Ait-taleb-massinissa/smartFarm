@@ -4,7 +4,7 @@
 #include "driver/gpio.h"
 
 // Configuration du GPIO pour la lampe
-#define LAMP_GPIO_PIN GPIO_NUM_2  // Modifier selon votre branchement
+#define LAMP_GPIO_PIN GPIO_NUM_16  // Modifier selon votre branchement
 
 // Initialise le GPIO de la lampe
 void lamp_init(void);
