@@ -137,9 +137,45 @@ static void servo_set_angle(ledc_channel_t channel, int angle)
     ledc_update_duty(LEDC_LOW_SPEED_MODE, channel);
 }
 
+// Obtenir le canal LEDC selon le GPIO
+static ledc_channel_t get_servo_channel(gpio_num_t gpio)
+{
+    if (gpio == GPIO_NUM_18) {
+        return LEDC_CHANNEL_0;
+    } else if (gpio == GPIO_NUM_19) {
+        return LEDC_CHANNEL_1;
+    } else if (gpio == GPIO_NUM_21) {
+        return LEDC_CHANNEL_2;
+    }
+    return LEDC_CHANNEL_1;
+}
+
+// Fonction pour OUVRIR une fenêtre/porte (angle 90°)
+void servo_ouvrir(gpio_num_t gpio)
+{
+    ledc_channel_t channel = get_servo_channel(gpio);
+    ESP_LOGI(TAG, "Ouverture servo sur GPIO%d", gpio);
+    servo_set_angle(channel, 90);  // 90° = position ouverte
+}
+
+// Fonction pour FERMER une fenêtre/porte (angle 0°)
+void servo_fermer(gpio_num_t gpio)
+{
+    ledc_channel_t channel = get_servo_channel(gpio);
+    ESP_LOGI(TAG, "Fermeture servo sur GPIO%d", gpio);
+    servo_set_angle(channel, 0);  // 0° = position fermée
+}
+
+// Fonction pour définir un angle personnalisé
+void servo_set_position(gpio_num_t gpio, int angle)
+{
+    ledc_channel_t channel = get_servo_channel(gpio);
+    ESP_LOGI(TAG, "Servo GPIO%d -> %d degres", gpio, angle);
+    servo_set_angle(channel, angle);
+}
+
 void servo_task(void *pvParameters)
 {
-    // Récupérer le GPIO depuis pvParameters
     gpio_num_t servo_gpio = (gpio_num_t)(uintptr_t)pvParameters;
     
     ESP_LOGI(TAG, "Tache servo demarree sur GPIO%d", servo_gpio);
@@ -158,17 +194,7 @@ void servo_task(void *pvParameters)
         timer_init = true;
     }
     
-    // Sélectionner le canal selon le GPIO
-    ledc_channel_t servo_channel;
-    if (servo_gpio == GPIO_NUM_18) {
-        servo_channel = LEDC_CHANNEL_0;
-    } else if (servo_gpio == GPIO_NUM_19) {
-        servo_channel = LEDC_CHANNEL_1;
-    } else if (servo_gpio == GPIO_NUM_21) {
-        servo_channel = LEDC_CHANNEL_2;
-    } else {
-        servo_channel = LEDC_CHANNEL_1;
-    }
+    ledc_channel_t servo_channel = get_servo_channel(servo_gpio);
     
     // Config channel PWM
     ledc_channel_config_t channel_conf = {
@@ -181,21 +207,18 @@ void servo_task(void *pvParameters)
     };
     ledc_channel_config(&channel_conf);
     
-    // Position initiale: fermee
+    // Position initiale: fermée
     servo_set_angle(servo_channel, 0);
     
     while (1)
     {
-        // Pour l'instant, le servo reste à 0°
-        
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 
-// Fonction pour lancer une tâche servo
 void servo_start_task(gpio_num_t gpio_num)
 {
     xTaskCreate(
-        servo_task,"servo_task",2048,(void *)gpio_num, 3,NULL
+        servo_task, "servo_task", 2048, (void *)gpio_num, 3, NULL
     );
 }
