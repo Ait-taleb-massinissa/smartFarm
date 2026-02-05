@@ -35,7 +35,7 @@ void relay_off()
 void relay_task(void *pvParameters)
 {
     // Récupérer le numéro de pin depuis pvParameters
-    gpio_num_t relay_gpio = (gpio_num_t)(uintptr_t)pvParameters;
+    gpio_num_t relay_gpio = (gpio_num_t)(uintptr_t)pvParamete0rs;
     
     ESP_LOGI("RELAY", "Tache relais demarree sur GPIO%d", relay_gpio);
     
