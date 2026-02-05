@@ -14,5 +14,6 @@
     "--query-driver=**",
     "--compile-commands-dir=c:\\Users\\acer\\ smartFarm\\build"
   ],
-  "idf.flashType": "UART"
+  "idf.flashType": "UART",
+  "idf.currentSetup": "C:\\Users\\acer\\esp\\v5.5.1\\esp-idf"
 }
