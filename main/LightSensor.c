@@ -6,7 +6,7 @@
 #include "freertos/task.h"
 #include "Queues.h"
 
-#define ADC_CHANNEL ADC1_CHANNEL_7 // GPIO35
+#define ADC_CHANNEL ADC1_CHANNEL_0 // GPIO36 (VP)
 #define ADC_MAX 4095
 #define MAX_LUX 350.0f
 
@@ -30,7 +30,7 @@ void get_light_intensity(void *pvParameters)
 
         xQueueSend(LightQueue, &light_intensity, portMAX_DELAY);
 
-        printf("Light: %.2f lux | ADC: %d\n", light_intensity, adc_value);
+        // printf("Light: %.2f lux | ADC: %d\n", light_intensity, adc_value);
 
         vTaskDelay(pdMS_TO_TICKS(2000));
     }

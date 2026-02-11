@@ -1,10 +1,18 @@
-#ifndef SERVO_CONTROL_H
-#define SERVO_CONTROL_H
+#ifndef SERVO_H
+#define SERVO_H
 
 #include "driver/gpio.h"
 
-void servo_task(void *pvParameters);
-void servo_start_task(gpio_num_t gpio_num);
-void servo_set_angle(ledc_channel_t channel, int angle);
+// Initialisation du servo sur un GPIO
+void servo_init(gpio_num_t gpio);
 
-#endif
+// Ouvrir le servo (angle 90°)
+void servo_ouvrir(gpio_num_t gpio);
+
+// Fermer le servo (angle 0°)
+void servo_fermer(gpio_num_t gpio);
+
+// Définir un angle personnalisé
+void servo_set_position(gpio_num_t gpio, int angle);
+
+#endif // SERVO_H

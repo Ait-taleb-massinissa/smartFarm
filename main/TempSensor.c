@@ -6,7 +6,7 @@
 #include "freertos/task.h"
 #include "Queues.h"
 
-#define ADC_CHANNEL ADC1_CHANNEL_6 // GPIO34
+#define ADC_CHANNEL ADC1_CHANNEL_7 // GPIO35
 #define R0 10000.0                 // 10k ohm
 #define BETA 3975.0
 #define VREF 3.3
@@ -33,7 +33,7 @@ void get_temperature(void *pvParameters)
 
         xQueueSend(TempQueue, &temperature, portMAX_DELAY);
 
-        printf("Temperature: %.2f°C\n", temperature);
+        // printf("Temperature: %.2f°C adc value: %d\n", temperature, adc_value);
 
         vTaskDelay(2000 / portTICK_PERIOD_MS); // Delay for 2 seconds
     }

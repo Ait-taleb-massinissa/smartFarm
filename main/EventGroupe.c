@@ -18,7 +18,7 @@
 
 EventGroupHandle_t event_group_handle;
 
-void temp_queue_handler(void *pvParameters)
+void temp_event_group_handler(void *pvParameters)
 {
     while (1)
     {
@@ -32,15 +32,20 @@ void temp_queue_handler(void *pvParameters)
         if (bits & BIT_TEMP_ALERT)
         {
             ESP_LOGI("EVENT_GROUP", "🚨 DANGER TEMP DETECTED!");
-            relay_on(GPIO_NUM_23); // Activer le relais pour la ventilation
-            // servo_on(GPIO_NUM_22); // Activer le servo moteur pour ouvrir la fenêtre
+            relay_on(GPIO_NUM_23);     // Activer le relais pour la ventilation
+            servo_ouvrir(GPIO_NUM_18); // Ouvrir la fenetre
+            servo_ouvrir(GPIO_NUM_19); // Ouvrir la fenetre
+            // servo_ouvrir(GPIO_NUM_21); // Ouvrir la porte
         }
 
         if (bits & BIT_TEMP_NORMAL)
         {
             ESP_LOGI("EVENT_GROUP", "✅ Temp normal.");
             relay_off(GPIO_NUM_23);
-            // servo_off(GPIO_NUM_22);
+            servo_fermer(GPIO_NUM_18); // Fermer la fenetre
+            servo_fermer(GPIO_NUM_19); // Fermer la fenetre
+            // servo_fermer(GPIO_NUM_21); // Fermer la porte
+            vTaskDelay(pdMS_TO_TICKS(2000));
         }
     }
 }
@@ -60,14 +65,19 @@ void gaz_event_group_handler(void *pvParameters)
         {
             ESP_LOGI("EVENT_GROUP", "🚨 DANGER GAZ DETECTED!");
             relay_on(GPIO_NUM_23);
-            ouvrir_fenetre();
+            servo_ouvrir(GPIO_NUM_18); // Ouvrir la fenetre
+            servo_ouvrir(GPIO_NUM_19); // Ouvrir la fenetre
+            // servo_ouvrir(GPIO_NUM_21); // Ouvrir la porte
         }
 
         if (bits & BIT_GAZ_NORMAL)
         {
             ESP_LOGI("EVENT_GROUP", "✅ Gaz normal.");
             relay_off(GPIO_NUM_23);
-            fermer_fenetre();
+            servo_fermer(GPIO_NUM_18); // Fermer la fenetre
+            servo_fermer(GPIO_NUM_19); // Fermer la fenetre
+            // servo_fermer(GPIO_NUM_21); // Fermer la porte
+            vTaskDelay(pdMS_TO_TICKS(2000));
         }
     }
 }
@@ -86,11 +96,14 @@ void light_event_group_handler(void *pvParameters)
         if (bits & BIT_LIGHT_ALERT)
         {
             ESP_LOGI("EVENT_GROUP", "🚨 LOW LIGHT DETECTED!");
+            relay_on(GPIO_NUM_25); // Activer le relais pour la lumière
         }
 
         if (bits & BIT_LIGHT_NORMAL)
         {
             ESP_LOGI("EVENT_GROUP", "✅ Light normal.");
+            relay_off(GPIO_NUM_25); // Désactiver le relais pour la lumière
+            vTaskDelay(pdMS_TO_TICKS(2000));
         }
     }
 }
@@ -109,13 +122,14 @@ void moisture_event_group_handler(void *pvParameters)
         if (bits & BIT_MOISTURE_ALERT)
         {
             ESP_LOGI("EVENT_GROUP", "🚨 DRY SOIL DETECTED!");
-            relay_on(GPIO_NUM_23);
+            relay_on(GPIO_NUM_22);
         }
 
         if (bits & BIT_MOISTURE_NORMAL)
         {
             ESP_LOGI("EVENT_GROUP", "✅ Soil normal.");
-            relay_off( GPIO_NUM_23);
+            relay_off(GPIO_NUM_22);
+            vTaskDelay(pdMS_TO_TICKS(2000));
         }
     }
 }
@@ -134,13 +148,14 @@ void water_event_group_handler(void *pvParameters)
         if (bits & BIT_WATER_ALERT)
         {
             ESP_LOGI("EVENT_GROUP", "🚨 WATER NEEDED DETECTED!");
-            relay_on(GPIO_NUM_23);
+            relay_on(GPIO_NUM_22);
         }
 
         if (bits & BIT_WATER_NORMAL)
         {
             ESP_LOGI("EVENT_GROUP", "✅ Water normal.");
-            relay_off(GPIO_NUM_23);
+            relay_off(GPIO_NUM_22);
+            vTaskDelay(pdMS_TO_TICKS(2000));
         }
     }
 }
@@ -148,6 +163,9 @@ void water_event_group_handler(void *pvParameters)
 void start_event_group_handler()
 {
     event_group_handle = xEventGroupCreate();
-
+    xTaskCreate((TaskFunction_t)temp_event_group_handler, "TempEventGroupHandler", 4096, NULL, 5, NULL);
+    xTaskCreate((TaskFunction_t)light_event_group_handler, "LightEventGroupHandler", 4096, NULL, 5, NULL);
+    xTaskCreate((TaskFunction_t)moisture_event_group_handler, "MoistureEventGroupHandler", 4096, NULL, 5, NULL);
+    xTaskCreate((TaskFunction_t)water_event_group_handler, "WaterEventGroupHandler", 4096, NULL, 5, NULL);
     xTaskCreate((TaskFunction_t)gaz_event_group_handler, "GazEventGroupHandler", 4096, NULL, 5, NULL);
 }

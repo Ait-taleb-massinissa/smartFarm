@@ -12,10 +12,11 @@ bool g_gas_alert = false;
 // Tâche simple du capteur de gaz
 static void gas_task(void *pvParameters)
 {
+    gas_sensor_init();
     // PRÉCHAUFFAGE: Les capteurs MQ ont besoin de 20-30 secondes
-    printf("⏳ Préchauffage capteur MQ (15s)...\n");
-    vTaskDelay(pdMS_TO_TICKS(15000)); // Attendre 15 secondes
-    printf("✅ Capteur MQ prêt!\n");
+    ESP_LOGI("gaz","⏳ Préchauffage capteur MQ (30s)...\n");
+    vTaskDelay(pdMS_TO_TICKS(30000)); // Attendre 30 secondes
+    ESP_LOGI("gaz","✅ Capteur MQ prêt!\n");
 
     while (1)
     {
@@ -27,12 +28,12 @@ static void gas_task(void *pvParameters)
         if (g_gas_value > GAS_THRESHOLD_DANGER)
         {
             g_gas_alert = true;
-            printf("🚨 DANGER GAZ! Valeur: %d (bas = gaz!)\n", g_gas_value);
+            // printf("🚨 DANGER GAZ! Valeur: %d \n", g_gas_value);
         }
         else
         {
             g_gas_alert = false;
-            printf("✅ Air propre: %d ADC\n", g_gas_value);
+            // printf("✅ Air propre: %d ADC\n", g_gas_value);
         }
 
         xQueueSend(GasQueue, &g_gas_value, portMAX_DELAY);

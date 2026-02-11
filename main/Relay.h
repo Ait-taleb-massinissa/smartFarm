@@ -12,6 +12,7 @@ void relay_off();
 #include <stdint.h>
 #include "driver/gpio.h"
 
+void relay_init(gpio_num_t gpio_num);
 void relay_on(gpio_num_t gpio_num);
 void relay_off(gpio_num_t gpio_num);
 

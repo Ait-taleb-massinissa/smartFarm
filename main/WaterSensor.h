@@ -1,7 +1,7 @@
 #ifndef WATER_SENSOR_H
 #define WATER_SENSOR_H
 
-void get_water_level(void *pvParameters);
-void show_water_level_task(void *pvParameters);
-
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+void water_monitor_task(void *pvParameters);
 #endif
