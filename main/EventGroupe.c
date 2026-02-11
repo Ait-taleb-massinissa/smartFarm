@@ -31,7 +31,7 @@ void temp_event_group_handler(void *pvParameters)
 
         if (bits & BIT_TEMP_ALERT)
         {
-            ESP_LOGI("EVENT_GROUP", "🚨 DANGER TEMP DETECTED!");
+            ESP_LOGW("EVENT_GROUP", "🚨 DANGER TEMP DETECTED!");
             relay_on(GPIO_NUM_23);     // Activer le relais pour la ventilation
             servo_ouvrir(GPIO_NUM_18); // Ouvrir la fenetre
             servo_ouvrir(GPIO_NUM_19); // Ouvrir la fenetre
@@ -63,7 +63,7 @@ void gaz_event_group_handler(void *pvParameters)
 
         if (bits & BIT_GAZ_ALERT)
         {
-            ESP_LOGI("EVENT_GROUP", "🚨 DANGER GAZ DETECTED!");
+            ESP_LOGW("EVENT_GROUP", "🚨 DANGER GAZ DETECTED!");
             relay_on(GPIO_NUM_23);
             servo_ouvrir(GPIO_NUM_18); // Ouvrir la fenetre
             servo_ouvrir(GPIO_NUM_19); // Ouvrir la fenetre
@@ -95,7 +95,7 @@ void light_event_group_handler(void *pvParameters)
 
         if (bits & BIT_LIGHT_ALERT)
         {
-            ESP_LOGI("EVENT_GROUP", "🚨 LOW LIGHT DETECTED!");
+            ESP_LOGW("EVENT_GROUP", "🚨 LOW LIGHT DETECTED!");
             relay_on(GPIO_NUM_25); // Activer le relais pour la lumière
         }
 
@@ -121,7 +121,7 @@ void moisture_event_group_handler(void *pvParameters)
 
         if (bits & BIT_MOISTURE_ALERT)
         {
-            ESP_LOGI("EVENT_GROUP", "🚨 DRY SOIL DETECTED!");
+            ESP_LOGW("EVENT_GROUP", "🚨 DRY SOIL DETECTED!");
             relay_on(GPIO_NUM_22);
         }
 
@@ -147,7 +147,7 @@ void water_event_group_handler(void *pvParameters)
 
         if (bits & BIT_WATER_ALERT)
         {
-            ESP_LOGI("EVENT_GROUP", "🚨 WATER NEEDED DETECTED!");
+            ESP_LOGW("EVENT_GROUP", "🚨 WATER NEEDED DETECTED!");
             relay_on(GPIO_NUM_22);
         }
 

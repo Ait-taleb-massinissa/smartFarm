@@ -21,22 +21,7 @@
 
 void app_main(void)
 {
-    // create_queues();
-
-    // xTaskCreate(&get_temperature, "get temperature", 2048, NULL, 5, NULL);
-    // xTaskCreate(&get_light_intensity, "get light intensity", 2048, NULL, 5, NULL);
-    // xTaskCreate(&get_moisture_level, "get moisture level", 2048, NULL, 5, NULL);
-    // xTaskCreate(&get_water_level, "get water level", 2048, NULL, 5, NULL);
-    // ESP_LOGI("MAIN", "Smart Farm System Running...");
-
-    // ESP_LOGI("MAIN", "Web server started");
-    // create_queues();
-    // relay_init();
-    // gas_sensor_init();
-    // gas_sensor_start();
-    // servo_fenetre_init();
-    // start_queue_handlers();
-    // start_event_group_handler();
+  
     log_buffer_init();
 
     create_queues();
